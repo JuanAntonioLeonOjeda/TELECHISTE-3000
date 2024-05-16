@@ -2,6 +2,10 @@
 
 !!!ALL ROUTES START WITH /api
 
+### DB Diagram
+
+![](diagram.png)
+
 ### Authentication Endpoints
 
 The Authentication flow for the application is:
