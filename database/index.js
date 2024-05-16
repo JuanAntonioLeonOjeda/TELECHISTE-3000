@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize')
 
+// Instancia de la conexión a nuestra base de datos
 const connection = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -11,6 +12,7 @@ const connection = new Sequelize(
   }
 )
 
+// Función de comprobación de la conexión a la base de datos
 const checkDB = async () => {
   try {
     await connection.authenticate()
@@ -21,6 +23,7 @@ const checkDB = async () => {
   }
 }
 
+// Función para sincronizar los modelos definidos en nuestro código con nuestra base de datos
 const syncModels = async () => {
   try {
     await connection.sync()
