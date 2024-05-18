@@ -138,11 +138,12 @@ const getCategoryJokes = async (req, res) => {
       });
     }
     
-    const jokes = await category.getJokes() //Lazy loading
-
+    // El definir una relación Many to Many entre Joke y Category, sequelize define automáticamente un método llamado getJokes
+    const jokes = await category.getJokes() // LAZY LOADING: primero identificamos la categoría en la base de datos y luego, en una operación aparte, obtenemos la información de sus chistes relacionados y los guardamos en una constante independiente.
+  
     res.status(200).json({
       message: "Category Jokes fetched",
-      result: jokes,
+      result: jokes, // Podemos emplear lazy loading para devolver solo una parte específica de la información. Aquí devolvemos la información de los chistes, sin necesidad de incluir la información de la categoría relacionada
     });
   } catch (error) {
   console.log(error);

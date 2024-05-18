@@ -26,6 +26,7 @@ const addFavouriteJoke = async (req, res) => {
       res.status(404).json()
     }
 
+    // Al definir una relación Many to Many entre Joke y User, Sequelize nos ha generado automáticamente el método addUser, donde podemos añadir al usuario que tenemos guardado en res.locals, que es el usuario logueado
     await joke.addUser(res.locals.user)
 
     res.status(200).json({
@@ -42,12 +43,15 @@ const addLike = async (req, res) => {
     const joke = await Joke.findByPk(req.params.id)
 
     if (!joke) {
-      res.status(404).json()
+      res.status(404).json({
+        message: 'Joke not found',
+        result: 0
+      })
     }
 
-    joke.likes++
+    joke.likes++ // Aumentamos en 1 el contador de likes
 
-    await joke.save()
+    await joke.save() // Guardamos los cambios realizados al chiste en la base de datos
 
     res.status(200).json({
       message: 'Liked added',

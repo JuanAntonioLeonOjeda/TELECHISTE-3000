@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      where: req.query
+      where: req.query // Permitimos filtrar usuarios pasando una query desde el cliente. Si no se pasa ninguna query, devolverá a todos los usuarios
     })
 
     if (!users) {
@@ -33,7 +33,7 @@ const getOneUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, {
       include: {
-        model: ContactInfo
+        model: ContactInfo // EAGER LOADING. Devolvemos la info del usuario incluyendo en el mismo objeto la información de contacto que tenga relacionada
       }
     })
 
@@ -60,11 +60,13 @@ const getOneUser = async (req, res) => {
 const getOwnProfile = async (req, res) => {
   try {
     const user = await User.findByPk(res.locals.user.id, {
-      include:[
+      include:[ // EAGER LOADING: Devolvemos la info de contacto y todos los chistes que tenga como favoritos
       {
         model: ContactInfo,
       }, 
-      {model: Joke}
+      {
+        model: Joke
+      }
     ],
     });
 
@@ -88,8 +90,11 @@ const getOwnProfile = async (req, res) => {
   }
 };
 
+
+// Función de creación de usuario que emplearía un administrador
 const createUser = async (req, res) => {
   try {
+    //Debemos encriptar la contraseña, igual que en el signup
     const salt = bcrypt.genSaltSync(parseInt(process.env.BCRYPT_SALTS))
     req.body.password = bcrypt.hashSync(req.body.password, salt)
 
@@ -119,6 +124,7 @@ const updateOneUser = async (req, res) => {
       }
     );
 
+    // La función de update y destroy de sequelize devuelve un array con un 0 si no ha encontrado al usuario o no ha hecho cambios, y un array con un 1 si ha ido todo bien
     if (result === 0) {
       res.status(404).json({
         message: "No user found",

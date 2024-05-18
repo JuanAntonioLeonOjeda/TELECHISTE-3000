@@ -7,12 +7,12 @@ const User = connection.define(
     // Columnas de la tabla
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false, // Hacemos que sea un campo obligatorio
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true // Hacemos que sea un campo con valor único
     },
     password: {
       type: DataTypes.STRING,
@@ -20,7 +20,7 @@ const User = connection.define(
     },
     role: {
       type: DataTypes.ENUM('user', 'admin'), // Definimos 'user' y 'admin' como los únicos valores válidos para la columna 'role'
-      defaultValue: 'user'
+      defaultValue: 'user' // Hacemos que su valor por defecto sea 'user'
     }
   },
   {
